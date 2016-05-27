@@ -1,21 +1,20 @@
 #Job Locations
 
 Locations:
-  - California
+  California:
     - San Diego
     - San Franscisco
     - Oakland
-  - Georgia
+  Georgia:
     - Atlanta
-  - Arizona
-  - New Mexico
+  # - Arizona
+  # - New Mexico
 Jobs:
   - Python Developer
   - Data Scientist
   - Node.js Developer
   - Node Developer
   - Devops
-  - go
   - golang Developer
 
 #Website URLS
