@@ -1,0 +1,34 @@
+#Job Locations
+
+Locations:
+  - California
+    - San Diego
+    - San Franscisco
+    - Oakland
+  - Georgia
+    - Atlanta
+  - Arizona
+  - New Mexico
+Jobs:
+  - Python Developer
+  - Data Scientist
+  - Node.js Developer
+  - Node Developer
+  - Devops
+  - go
+  - golang Developer
+
+#Website URLS
+Websites:
+  Indeed:
+    key: 9379902260075610
+    url: 'http://api.indeed.com/ads/apisearch'
+Results: 200
+Rentals:
+  maxC: 1000
+  minC : 200
+  size: 125
+  landry: true
+  parking: true
+  MinBedroom: 1
+  MaxBedroom: 3
