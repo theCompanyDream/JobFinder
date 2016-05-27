@@ -1,5 +1,5 @@
 import requests
 
-def callIndeed(parameters):
-    request = requests.get('http://api.indeed.com/ads/apisearch', params = parameters)
+def callIndeed(url, parameters):
+    request = requests.get(url, params = parameters)
     return request

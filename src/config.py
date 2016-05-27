@@ -1,7 +1,7 @@
 """This script prompts a user to enter a message to encode or decode
 using a classic Caeser shift substitution (3 letter shift)"""
 
-import yaml
+import yaml, itertools
 
 
 def Dict_To_String_Generator(diction):
@@ -21,22 +21,13 @@ def location(file):
     """
     with open(file, 'r+') as stream:
         data = yaml.load(stream)
-
-        for x in Dict_To_String_Generator(data['Locations']):
+        locationList = [loc for loc in Dict_To_String_Generator(data['Locations'])]
+        zippedParameters = itertools.product(data,data['Jobs'], locationList)
+        for x in zippedParameters:
             print(x)
+        
 
-        for loc,key in data['Websites'].items():
-            data['token'] = key['key']
-            data['url'] = key['url']
-            print(loc)
-            print(key)
 
-        #print(data)
-
-class Request(object):
-    def __init__(self, file):
-        with open(file, 'r+') as stream:
-            self.data = yaml.load(stream)
 
 if __name__ == "__main__":
     location(r'C:\Users\company2\workspace\jobs\bin\request.yaml')

@@ -1,5 +1,4 @@
 #Job Locations
-
 Locations:
   California:
     - San Diego
@@ -22,6 +21,8 @@ Websites:
   Indeed:
     key: 9379902260075610
     url: 'http://api.indeed.com/ads/apisearch'
+  Monster:
+    url: 'monster'
 Results: 200
 Rentals:
   maxC: 1000
