@@ -7,7 +7,7 @@ import locations
 
 def parseFile(file=None):
     """
-        Loads file and translates it into a generator function
+        Loads file and translates and returns a generator function
     """
     fileLocation = file
     if fileLocation is None:

@@ -14,8 +14,8 @@ def listSwaggerConfig():
     """
 
     """
-    dir = "{0}\\{1}".format(os.path.dirname(__file__), configDirectory)
-    return [fileloc for fileloc in  os.listdir(dir) if swagPattern in fileloc]
+    configDir = "{0}\\{1}".format(os.path.dirname(__file__), configDirectory)
+    return {fileloc.replace(swagPattern, ''): fileloc for fileloc in  os.listdir(configDir) if swagPattern in fileloc}
 
 if __name__ == "__main__":
     print(GetDefaultConfigFile())
