@@ -157,7 +157,7 @@ paths:
           format: string
         - name: useragent
           in: query
-          description: 	|
+          description: |
             The User-Agent (browser) of the end-user to whom the job results will be displayed. This can be obtained from the "User-Agent" HTTP request header from the end-user. This field is required.
           required: true
           type: string
@@ -176,6 +176,42 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
+  Result:
+    type: object
+    properties:
+      jobtitle:
+        type: string
+      company:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      country:
+        type: string
+      formattedLocation:
+        type: string
+      source:
+        type: string
+      date:
+        type: string
+        format: date
+      snippet:
+        type: string
+      longitude:
+        type: number
+        format: double
+      jobkey:
+        type: integer
+        format: int64
+      sponsored:
+        type: boolean
+      expired:
+        type: boolean
+      formattedLocationFull:
+        type: string
+      formattedRelativeTime:
+        type: string
   Job:
     type: object
     properties:
@@ -209,43 +245,7 @@ definitions:
       results:
         type: array
         items:
-          $ref: '#/definitions/result'
-    result:
-      type: object
-      properties:
-        jobtitle:
-          type: string
-        company:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        country:
-          type: string
-        formattedLocation:
-          type: string
-        source:
-          type: string
-        date:
-          type: string
-          format: date
-        snippet:
-          type: string
-        longitude:
-          type: number
-          format: double
-        jobkey:
-          type: integer
-          format: int64
-        sponsored:
-          type: boolean
-        expired:
-          type: boolean
-        formattedLocationFull:
-          type: string
-        formattedRelativeTime:
-          type: string
+          $ref: '#/definitions/Result'
   Error:
     type: object
     properties:
