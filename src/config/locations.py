@@ -4,7 +4,7 @@ import os
 configDirectory = 'yaml'
 swagPattern = 'swagger.yaml'
 
-def getConfigFile():
+def GetDefaultConfigFile():
     """
         Get the config file from dictionary
     """
@@ -18,5 +18,5 @@ def listSwaggerConfig():
     return [fileloc for fileloc in  os.listdir(dir) if swagPattern in fileloc]
 
 if __name__ == "__main__":
-    print(getConfigFile())
+    print(GetDefaultConfigFile())
     print(listSwaggerConfig())

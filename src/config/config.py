@@ -1,21 +1,22 @@
 """This script prompts a user to enter a message to encode or decode
 using a classic Caeser shift substitution (3 letter shift)"""
 
-import yaml, itertools, locations
+import yaml
+import itertools
+import locations
 
-def parseFile(file = None):
+def parseFile(file=None):
     """
         Loads file and translates it into a generator function
     """
-    fileString = file
-    if file == None :
-        fileString = locations.getConfigFile()
-        print(fileString)
+    fileLocation = file
+    if fileLocation is None:
+        fileLocation = locations.GetDefaultConfigFile()
 
-    with open(fileString, 'r+') as stream:
-        data = yaml.load(stream)
-        data['Locations'] = [loc for loc in Dict_To_String_Generator(data['Locations'])]
-        return data
+    with open(fileLocation, 'r+') as stream:
+        fileData = yaml.load(stream)
+        fileData['Locations'] = [loc for loc in Dict_To_String_Generator(fileData['Locations'])]
+        return fileData
 
 def GetJobRequest(data):
     """
@@ -34,7 +35,7 @@ def BuildRequest(data, *defaultparams):
     JobRequest = GetJobRequest(data)
     while len(WebsiteList) > -1:
         try:
-            searchdict = {key:data[key]  for key in defaultparams}
+            searchdict = {key: data[key] for key in defaultparams}
             searchdict.update(next(JobRequest))
             searchdict['key'] = WebsiteList[0]['key']
             yield searchdict
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     for x in GetJobRequest(data):
         print(x)
 
-    print ("ok this is new shit \n\n")
+    print("ok this is new shit \n\n")
 
-    for x in BuildRequest(data, "results", 'radius'):
+    for x in BuildRequest(data, "limit", 'radius'):
         print(x)
