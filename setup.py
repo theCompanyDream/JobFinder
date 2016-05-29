@@ -1,12 +1,26 @@
-"""
-    Sets up the Docstrings
-"""
+#coding: utf-8
 
-from distutils.core import setup
+import sys
+from setuptools import setup, find_packages
+
+NAME = "Job Search API"
+VERSION = "0.0.1"
+
+# To install the library, run the following
+#
+# python setup.py install
+#
+# prerequisite: setuptools
+# http://pypi.python.org/pypi/setuptools
+REQUIRES = ['requests', 'yaml']
+
 
 setup(
-    name='Job Search API',
+    name=NAME,
     author='Timothy Brantley II',
-    version='0.0.1',
-    packages=['requests', 'yaml']
+    keywords=['Indeed', 'Scraper'],
+    install_requires = REQUIRES,
+    include_package_data=True,
+    version=VERSION,
+    packages=['requests', 'yaml', 'grequests']
     )
