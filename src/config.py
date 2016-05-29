@@ -12,21 +12,22 @@ def parseFile(file):
         data['Locations'] = [loc for loc in Dict_To_String_Generator(data['Locations'])]
         return data
 
-
 def GetJobRequest(data):
-    "formats the job part of the document"
+    """
+    Generator that gets the requirements for me
+    """
     zippedParameters = list(itertools.product(data['Jobs'], data['Locations']))
 
     for x in zippedParameters:
         yield {'Search': x[0], 'Location': x[1]}
 
-
 def BuildRequest(data, *defaultparams):
+    """
+        This Builds
+    """
     WebsiteList = list(data['Websites'])
     JobRequest = GetJobRequest(data)
-
-    while len(WebsiteList) > 0:
-
+    while len(WebsiteList) > -1:
         try:
             searchdict = {key:data[key]  for key in defaultparams}
             searchdict.update(next(JobRequest))
@@ -34,13 +35,9 @@ def BuildRequest(data, *defaultparams):
             yield searchdict
         except StopIteration:
             JobRequest = GetJobRequest(data)
-            WebsiteList.pop()
+            WebsiteList.pop(0)
 
 
-
-def ConvertRentalRequest(payload):
-    "transforms and prepares it for rentals requests"
-    pass
 
 def Dict_To_String_Generator(diction):
     """
@@ -56,7 +53,7 @@ def Dict_To_String_Generator(diction):
 if __name__ == "__main__":
     data = parseFile(r'C:\Users\company2\workspace\JobFinder\bin\request.yaml')
     print(data)
-    
+
     for x in GetJobRequest(data):
         print(x)
 
