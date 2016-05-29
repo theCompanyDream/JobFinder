@@ -1,13 +1,18 @@
 """This script prompts a user to enter a message to encode or decode
 using a classic Caeser shift substitution (3 letter shift)"""
 
-import yaml, itertools
+import yaml, itertools, locations
 
-def parseFile(file):
+def parseFile(file = None):
     """
         Loads file and translates it into a generator function
     """
-    with open(file, 'r+') as stream:
+    fileString = file
+    if file == None :
+        fileString = locations.getConfigFile()
+        print(fileString)
+
+    with open(fileString, 'r+') as stream:
         data = yaml.load(stream)
         data['Locations'] = [loc for loc in Dict_To_String_Generator(data['Locations'])]
         return data
@@ -51,7 +56,7 @@ def Dict_To_String_Generator(diction):
         raise TypeError()
 
 if __name__ == "__main__":
-    data = parseFile(r'C:\Users\company2\workspace\JobFinder\bin\request.yaml')
+    data = parseFile()
     print(data)
 
     for x in GetJobRequest(data):
