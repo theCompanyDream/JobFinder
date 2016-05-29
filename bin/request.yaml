@@ -14,21 +14,24 @@ Jobs:
   - Node.js Developer
   - Node Developer
   - Devops
-  - golang Developer
+  - Golang Developer
 
 #Website URLS
 Websites:
-  Indeed:
+  -
+    name: 'Indeed'
     key: 9379902260075610
     url: 'http://api.indeed.com/ads/apisearch'
-  Monster:
+  -
+    name: 'Monster'
     url: 'monster'
-Results: 200
+results: 200
+radius: 30
 Rentals:
-  maxC: 1000
-  minC : 200
-  size: 125
-  landry: true
-  parking: true
-  MinBedroom: 1
-  MaxBedroom: 3
+    maxC: 1000
+    minC : 200
+    size: 125
+    landry: true
+    parking: true
+    MinBedroom: 1
+    MaxBedroom: 3
