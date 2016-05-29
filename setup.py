@@ -12,7 +12,7 @@ VERSION = "0.0.1"
 #
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
-REQUIRES = ['requests', 'yaml']
+REQUIRES = ['requests', 'yaml', 'nose']
 
 
 setup(
