@@ -15,16 +15,16 @@ schemaPattern = '.swagger.json'
 
 IndeedDict = {
     'Publisher': 'key',
-    'format' : 'format',
+    'format' : 'Format',
     'v': 'v',
     'q': 'Jobs',
-    'l': 'Locations',
-    'radius': 'radius',
-    'jt' : 'JobTypes',
-    'limit' : 'limit',
+    'l': 'Location',
+    'radius': 'Radius',
+    'jt' : 'Search',
+    'limit' : 'Limit',
     'fromage' : 'TimeSpan',
     'latlong' :  'ShowGeo',
-    'useragent': 'userAgent'
+    'useragent': 'UserAgent'
 }
 
 def parseFile(file=None):
@@ -64,16 +64,20 @@ def BuildRequest(*defaultparams, **kwargs):
         :rtype dictionary
 
     """
+    payload = kwargs
     WebsiteList = list(data['Websites'])
+    payload.update(WebsiteList[0])
     JobRequest = GetJobRequest(**kwargs)
+
     while len(WebsiteList) > -1:
         try:
-            searchdict = {key: data[key] for key in defaultparams}
-            searchdict.update(next(JobRequest))
-            searchdict['key'] = WebsiteList[0]['key']
+            searchdict = next(JobRequest)
+            payload.update(searchdict)
+            searchdict.update({key: payload[key] for key in defaultparams})
             yield searchdict
         except StopIteration:
             JobRequest = GetJobRequest(**kwargs)
+            payload.update(WebsiteList[0])
             WebsiteList.pop(0)
 
 
@@ -81,17 +85,14 @@ def BuildRequest(*defaultparams, **kwargs):
 def Dict_To_String_Generator(diction):
     """
         Generator Function that concats a val, key
+        TODO: better name and make format lambda
     """
     if diction:
         for key,val in [[v, k] for v, k in diction.items()]:
             for city in val:
-                yield "{0},{1}".format(city, key)
+                yield "{0}, {1}".format(city, key)
     else:
         raise TypeError()
-
-class DataParameters():
-    def __init__(self, file):
-        self.data = parseFile(file)
 
 def MapValues(mappingDictionary, requestDictionary):
     return {key: requestDictionary.get(val, '') for key, val in mappingDictionary.items()}
@@ -116,8 +117,6 @@ def listSwaggerConfig():
     dirDict.update({'schema': os.path.join(configDir, 'schema.v2.modified.swagger')})
 
     return dirDict
-
-
 
 class SwaggerApi(object):
     """
@@ -147,8 +146,9 @@ if __name__ == "__main__":
     swagger = SwaggerApi()
     client = swagger.Get('indeed')
     dict = MapValues(IndeedDict, data)
+    #map websites to key dictionary
     valList = [val for key, val in IndeedDict.items()]
-    print("hello\n", dict,"\nVal List", valList)
+    # print("hello\n", dict,"\nVal List", valList)
 
     for x in BuildRequest(*valList, **data):
         print(x)

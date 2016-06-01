@@ -21,28 +21,28 @@ Websites:
     name: 'Indeed'
     key: 9379902260075610
     url: 'http://api.indeed.com/ads/apisearch'
-    unique:
-      latlong: 1
-      v: 2
+    latlong: 1
+    v: 2
   -
-    name: 'Monster'
-    url: 'monster'
-    key: 3
+    Name: 'Monster'
+    Url: 'monster'
+    Key: 3
 JobTypes:
   - fulltime
   - parttime
   - contract
-useragent: JobRequestBrowser
-limit: 200
-radius: 30
-format: json
+SharedProperties:
+UserAgent: JobRequestBrowser
+Limit: 200
+Radius: 30
+Format: json
 TimeSpan: 10
 ShowGeo: 1
-Rentals:
-    maxC: 1000
-    minC : 200
-    size: 125
-    landry: true
-    parking: true
-    MinBedroom: 1
-    MaxBedroom: 3
+# Rentals:
+#     maxC: 1000
+#     minC : 200
+#     size: 125
+#     landry: true
+#     parking: true
+#     MinBedroom: 1
+#     MaxBedroom: 3
