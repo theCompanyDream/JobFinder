@@ -27,10 +27,15 @@ Websites:
     name: 'Monster'
     url: 'monster'
     key: 3
+JobTypes:
+  - fulltime
+  - parttime
+  - contract
 useragent: JobRequestBrowser
 limit: 200
 radius: 30
 format: json
+TimeSpan: 10
 Rentals:
     maxC: 1000
     minC : 200
