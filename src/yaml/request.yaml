@@ -21,8 +21,9 @@ Websites:
     name: 'Indeed'
     key: 9379902260075610
     url: 'http://api.indeed.com/ads/apisearch'
-    latlong: 1
-    v: 2
+    unique:
+      latlong: 1
+      v: 2
   -
     name: 'Monster'
     url: 'monster'
@@ -36,6 +37,7 @@ limit: 200
 radius: 30
 format: json
 TimeSpan: 10
+ShowGeo: 1
 Rentals:
     maxC: 1000
     minC : 200

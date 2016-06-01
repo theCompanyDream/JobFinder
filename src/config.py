@@ -6,7 +6,26 @@ using a classic Caeser shift substitution (3 letter shift)
 
 import yaml
 import itertools
-from locations import GetDefaultConfigFile
+import os
+from bravado.client import SwaggerClient
+
+configDirectory = 'yaml'
+swagPattern = '.swagger.yaml'
+schemaPattern = '.swagger.json'
+
+IndeedDict = {
+    'Publisher': 'key',
+    'format' : 'format',
+    'v': 'v',
+    'q': 'Jobs',
+    'l': 'Locations',
+    'radius': 'radius',
+    'jt' : 'JobTypes',
+    'limit' : 'limit',
+    'fromage' : 'TimeSpan',
+    'latlong' :  'ShowGeo',
+    'useragent': 'userAgent'
+}
 
 def parseFile(file=None):
     """
@@ -70,16 +89,72 @@ def Dict_To_String_Generator(diction):
     else:
         raise TypeError()
 
+class DataParameters():
+    def __init__(self, file):
+        self.data = parseFile(file)
 
+def MapValues(mappingDictionary, requestDictionary):
+    return {key: requestDictionary.get(val, '') for key, val in mappingDictionary.items()}
+
+def GetDefaultConfigFile():
+    """ Returns the requests config file from dictionary
+        :rtype str or unicode
+        :return str or unicode
+    """
+    return "{0}{1}".format(os.path.dirname(__file__), r'\yaml\request.yaml')
+
+def listSwaggerConfig():
+    """
+        Returns a list of only swagger configuration files
+    """
+    configDir = os.path.join(os.path.dirname(__file__), configDirectory)
+    dirList = os.listdir(configDir)
+
+    dirDict = {fileloc.replace(swagPattern, '') :os.path.join(configDir, fileloc)
+        for fileloc in dirList if swagPattern in fileloc}
+
+    dirDict.update({'schema': os.path.join(configDir, 'schema.v2.modified.swagger')})
+
+    return dirDict
+
+
+
+class SwaggerApi(object):
+    """
+
+    """
+    def __init__(self):
+        self.data = listSwaggerConfig()
+
+    def Get(self, key):
+        """
+            param: key for
+        """
+        loc = self.data[key]
+        assert loc is not None
+        return SwaggerClient.from_url("file:\\\\\\"+loc)
 
 if __name__ == "__main__":
     data = parseFile()
     print(data)
+    # print(GetDefaultConfigFile())
+    # print(listSwaggerConfig())
+    #
+    # for x in GetJobRequest(**data):
+    #     print(x)
+    #
+    # print("ok this is new shit \n\n")
+    swagger = SwaggerApi()
+    client = swagger.Get('indeed')
+    dict = MapValues(IndeedDict, data)
+    valList = [val for key, val in IndeedDict.items()]
+    print("hello\n", dict,"\nVal List", valList)
 
-    for x in GetJobRequest(**data):
+    for x in BuildRequest(*valList, **data):
         print(x)
 
-    print("ok this is new shit \n\n")
 
-    for x in BuildRequest("limit", 'radius', **data):
-        print(x)
+    print(client)
+
+    print(indeedDict)
+    # print("This is the new Mappings\n{0}".format(indeeddict))
