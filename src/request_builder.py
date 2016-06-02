@@ -122,20 +122,4 @@ def listSwaggerConfig():
     return dirDict
 
 if __name__ == "__main__":
-
     run()
-    # print(GetDefaultConfigFile())
-    # print(listSwaggerConfig())
-    #
-    # for x in GetJobRequest(**data):
-    #     print(x)
-    #
-    # print("ok this is new shit \n\n")
-    #map websites to key dictionary
-
-    # print("hello\n", dict,"\nVal List", valList)
-
-
-
-
-    # print("This is the new Mappings\n{0}".format(indeeddict))
