@@ -3,11 +3,9 @@ Author: Timothy Brantley II
 This script prompts a user to enter a message to encode or decode
 using a classic Caeser shift substitution (3 letter shift)
 """
-
-import yaml
 import itertools
 import os
-from bravado.client import SwaggerClient
+import yaml
 import requests
 
 configDirectory = 'yaml'
@@ -115,21 +113,6 @@ def listSwaggerConfig():
     dirDict.update({'schema': os.path.join(configDir, 'schema.v2.modified.swagger')})
 
     return dirDict
-
-class SwaggerApi(object):
-    """
-
-    """
-    def __init__(self):
-        self.data = listSwaggerConfig()
-
-    def Get(self, key):
-        """
-            param: key for
-        """
-        loc = self.data[key]
-        assert loc is not None
-        return SwaggerClient.from_url("file:\\\\\\"+loc)
 
 if __name__ == "__main__":
     data = parseFile()
