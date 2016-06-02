@@ -26,6 +26,13 @@ IndeedDict = {
     'useragent': 'UserAgent'
 }
 
+def run():
+    data = parseFile()
+    valList = [val for key, val in IndeedDict.items()]
+    for url, request in BuildRequest(*valList, **data):
+        indeedRequest = MapValues(IndeedDict, request)
+        yield requests.get(url, params=indeedRequest)
+
 def parseFile(file=None):
     """
         Loads file and translates and returns a generator function
@@ -115,8 +122,8 @@ def listSwaggerConfig():
     return dirDict
 
 if __name__ == "__main__":
-    data = parseFile()
-    print(data)
+
+    run()
     # print(GetDefaultConfigFile())
     # print(listSwaggerConfig())
     #
@@ -125,14 +132,10 @@ if __name__ == "__main__":
     #
     # print("ok this is new shit \n\n")
     #map websites to key dictionary
-    valList = [val for key, val in IndeedDict.items()]
+
     # print("hello\n", dict,"\nVal List", valList)
 
-    for url, request in BuildRequest(*valList, **data):
-        print(request)
-        indeedRequest = MapValues(IndeedDict, request)
-        result = requests.get(url, params=indeedRequest)
-        print(result)
+
 
 
     # print("This is the new Mappings\n{0}".format(indeeddict))
