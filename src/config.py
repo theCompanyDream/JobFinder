@@ -8,19 +8,20 @@ import yaml
 import itertools
 import os
 from bravado.client import SwaggerClient
+import requests
 
 configDirectory = 'yaml'
 swagPattern = '.swagger.yaml'
 schemaPattern = '.swagger.json'
 
 IndeedDict = {
-    'Publisher': 'key',
+    'publisher': 'key',
     'format' : 'Format',
     'v': 'v',
-    'q': 'Jobs',
+    'q': 'Search',
     'l': 'Location',
     'radius': 'Radius',
-    'jt' : 'Search',
+    'jt' : 'JobTypes',
     'limit' : 'Limit',
     'fromage' : 'TimeSpan',
     'latlong' :  'ShowGeo',
@@ -67,16 +68,13 @@ def BuildRequest(*defaultparams, **kwargs):
     payload = kwargs
     WebsiteList = list(data['Websites'])
     payload.update(WebsiteList[0])
-    JobRequest = GetJobRequest(**kwargs)
 
     while len(WebsiteList) > -1:
-        try:
-            searchdict = next(JobRequest)
+        for searchdict in GetJobRequest(**kwargs):
             payload.update(searchdict)
             searchdict.update({key: payload[key] for key in defaultparams})
-            yield searchdict
-        except StopIteration:
-            JobRequest = GetJobRequest(**kwargs)
+            yield WebsiteList[0]['url'], searchdict
+        if len(WebsiteList) >= 0:
             payload.update(WebsiteList[0])
             WebsiteList.pop(0)
 
@@ -143,18 +141,15 @@ if __name__ == "__main__":
     #     print(x)
     #
     # print("ok this is new shit \n\n")
-    swagger = SwaggerApi()
-    client = swagger.Get('indeed')
-    dict = MapValues(IndeedDict, data)
     #map websites to key dictionary
     valList = [val for key, val in IndeedDict.items()]
     # print("hello\n", dict,"\nVal List", valList)
 
-    for x in BuildRequest(*valList, **data):
-        print(x)
+    for url, request in BuildRequest(*valList, **data):
+        print(request)
+        indeedRequest = MapValues(IndeedDict, request)
+        result = requests.get(url, params=indeedRequest)
+        print(result)
 
 
-    print(client)
-
-    print(indeedDict)
     # print("This is the new Mappings\n{0}".format(indeeddict))
