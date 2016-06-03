@@ -6,7 +6,7 @@ using a classic Caeser shift substitution (3 letter shift)
 import itertools
 import os
 import yaml
-import requests
+import grequests
 
 configDirectory = 'yaml'
 swagPattern = '.swagger.yaml'
@@ -31,7 +31,8 @@ def run():
     valList = [val for key, val in IndeedDict.items()]
     for url, request in BuildRequest(*valList, **data):
         indeedRequest = MapValues(IndeedDict, request)
-        yield requests.get(url, params=indeedRequest)
+        print("yield Indeed {}".format(url))
+        yield grequests.get(url, params=indeedRequest)
 
 def parseFile(file=None):
     """
@@ -71,17 +72,15 @@ def BuildRequest(*defaultparams, **kwargs):
 
     """
     payload = kwargs
-    WebsiteList = list(data['Websites'])
+    WebsiteList = list(kwargs['Websites'])
     payload.update(WebsiteList[0])
 
-    while len(WebsiteList) > -1:
+    for website in WebsiteList:
         for searchdict in GetJobRequest(**kwargs):
             payload.update(searchdict)
             searchdict.update({key: payload[key] for key in defaultparams})
-            yield WebsiteList[0]['url'], searchdict
-        if len(WebsiteList) >= 0:
-            payload.update(WebsiteList[0])
-            WebsiteList.pop(0)
+            yield website['url'], searchdict
+        payload.update(website)
 
 
 
@@ -122,4 +121,7 @@ def listSwaggerConfig():
     return dirDict
 
 if __name__ == "__main__":
-    run()
+    r = run()
+
+    for x in range(0, 5):
+        print(next(r))

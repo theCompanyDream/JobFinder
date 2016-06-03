@@ -23,10 +23,10 @@ Websites:
     url: 'http://api.indeed.com/ads/apisearch'
     latlong: True
     v: 2
-  -
-    Name: 'Monster'
-    Url: 'monster'
-    Key: 3
+  # -
+  #   Name: 'Monster'
+  #   Url: 'monster'
+  #   Key: 3
 JobTypes: fulltime
 SharedProperties:
 UserAgent: JobRequestBrowser

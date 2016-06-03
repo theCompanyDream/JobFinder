@@ -95,11 +95,11 @@ paths:
           required: true
           type: string
           format: string
-          enum:
-            - fulltime
-            - parttime
-            - contract
-            - internship
+          # enum:
+          #   - fulltime
+          #   - parttime
+          #   - contract
+          #   - internship
         - name: start
           in: query
           description: |
@@ -180,7 +180,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-definitions:  
+definitions:
   Result:
     type: object
     properties:
