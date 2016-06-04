@@ -9,5 +9,4 @@ WORKDIR /data
 
 ADD /src /data
 
-Run make 
-CMD ['bash']
+RUN make 

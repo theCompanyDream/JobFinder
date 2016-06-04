@@ -1,3 +1,4 @@
+import configparser
 import logging
 import asyncio
 import rethinkdb as db
@@ -10,11 +11,21 @@ def connect():
 
 @asyncio.coroutine
 def save(tableName, payload):
-    if validate(tableName, payload)
+    logger.debug("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
+    if validate(tableName, payload):
+        pass
+    performSave(tableName, payload)
 
 def validate(name, payload):
     pass
 
+def performSave(name, payload):
+    connect()
+    db.table('users').insert(payload)
+
 if __name__ == "__main__":
-    pass
+    logger.debug("hello")
+    config = configparser.ConfigParser()
+    config.read('setup.cfg')
+    print(config.sections())
     # connnect()
