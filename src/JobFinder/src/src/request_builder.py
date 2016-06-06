@@ -23,7 +23,8 @@ IndeedDict = {
     'limit' : 'Limit',
     'fromage' : 'TimeSpan',
     'latlong' :  'ShowGeo',
-    'useragent': 'UserAgent'
+    'useragent': 'UserAgent',
+    'Table' : 'name'
 }
 
 def run():

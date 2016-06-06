@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def connect():
-    db.connect('localhost', 28015).repl()
+    db.connect('192.168.99.100', 32770).repl()
 
 @asyncio.coroutine
 def save(tableName, payload):
