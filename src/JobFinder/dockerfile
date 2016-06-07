@@ -9,4 +9,4 @@ WORKDIR /data
 
 ADD /src /data
 
-RUN make 
+RUN make

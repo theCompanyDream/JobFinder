@@ -19,15 +19,15 @@ def validate(name, payload):
 
 def performSave(name, payload):
     connect()
-    db.table(name).insert(payload).run()
-    print("checking if exists")
-    cursor = db.table(name).run()
-    for x in cursor:
-        print(x)
+    product = object
+    ifexists = db.table(name).get(payload).run()
+
+    if ifexists :
+        product = db.table(name).update(ifexists).run()
+    else:
+        product = db.table(name).insert(payload).run()
+
+    return product
 
 if __name__ == "__main__":
-    logger.debug("hello")
-    config = configparser.ConfigParser()
-    config.read('setup.cfg')
-    print(config.sections())
-    # connnect()
+    save('JobTable', {'Jobs': "Tim jobs yay"})
