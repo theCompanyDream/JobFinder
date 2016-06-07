@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+VAGRANTFILE_API_VERSION = "2"
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -13,6 +15,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
+  config.ssh.insert_key = false
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -46,9 +49,11 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
+    vb.name = "docker.dev"
 
     # Customize the amount of memory on the VM:
     vb.memory = "3072"
+    vb.cpus = 4
   end
   #
   # View the documentation for the provider you are using for more
@@ -66,10 +71,17 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
+    sudo apt-get install git -y
+    git clone git://github.com/ansible/ansible.git --recursive
+    cd ./ansible
+    source ./hacking/env-setup
 
+    sudo pip install paramiko PyYAML Jinja2 httplib2 six
+    echo "127.0.0.1" > ~/ansible_hosts
+    export ANSIBLE_INVENTORY=~/ansible_hosts
   SHELL
 
-  config.vm.provision "docker" do |d|
-    d.build_image "/vagrant/rethinkdb"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "/src/main.yml"
   end
 end

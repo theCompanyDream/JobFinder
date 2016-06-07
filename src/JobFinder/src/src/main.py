@@ -7,7 +7,7 @@
 import logging
 from request_builder import run
 from data import save
-import grequests
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -17,13 +17,12 @@ def init():
 
 def process_request_Save(rs):
     for result in rs:
-        resultsList = grequests.map(rs)
         print(result)
-        save('Job', result)
+        save('Job', result.json())
 
 def process_as_results_come_in():
     process = run()
-    requests = [next(process) for req in range(0,3)]
+    requests = [next(process) for req in range(0,1)]
     logging.debug("Going to save requests")
     process_request_Save(requests)
 

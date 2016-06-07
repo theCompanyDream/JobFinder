@@ -1,17 +1,15 @@
 import configparser
 import logging
-import asyncio
 import rethinkdb as db
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def connect():
-    db.connect('192.168.99.100', 32770).repl()
+    db.connect('192.168.99.100', 28015).repl()
 
-@asyncio.coroutine
 def save(tableName, payload):
-    logger.debug("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
+    print("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
     if validate(tableName, payload):
         pass
     performSave(tableName, payload)
@@ -21,7 +19,11 @@ def validate(name, payload):
 
 def performSave(name, payload):
     connect()
-    db.table('users').insert(payload)
+    db.table(name).insert(payload).run()
+    print("checking if exists")
+    cursor = db.table(name).run()
+    for x in cursor:
+        print(x)
 
 if __name__ == "__main__":
     logger.debug("hello")

@@ -6,7 +6,7 @@ using a classic Caeser shift substitution (3 letter shift)
 import itertools
 import os
 import yaml
-import grequests
+import requests
 
 configDirectory = 'yaml'
 swagPattern = '.swagger.yaml'
@@ -33,7 +33,7 @@ def run():
     for url, request in BuildRequest(*valList, **data):
         indeedRequest = MapValues(IndeedDict, request)
         print("yield Indeed {}".format(url))
-        yield grequests.get(url, params=indeedRequest)
+        yield requests.get(url, params=indeedRequest)
 
 def parseFile(file=None):
     """
