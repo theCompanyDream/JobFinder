@@ -14,6 +14,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
+
   config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
@@ -26,11 +27,11 @@ Vagrant.configure(2) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
 
 
-  config.vm.network "forwarded_port", guest: 8080, host: 8033 # Crwaler
-  config.vm.network "forwarded_port", guest: 8081, host: 8081 # Admin UI
-  config.vm.network "forwarded_port", guest: 8082, host: 8082 #Rest Service
-  config.vm.network "forwarded_port", guest: 32770, host: 32770 #Rethinkdb AdminUI
-  config.vm.network "forwarded_port", guest: 7113, host: 7113 # Redis
+  config.vm.network "forwarded_port", guest: 8080, host: 8035 # Crwaler
+  config.vm.network "forwarded_port", guest: 8081, host: 8084 # Admin UI
+  config.vm.network "forwarded_port", guest: 8082, host: 8086 # Rest Service
+  config.vm.network "forwarded_port", guest: 32770, host: 32771 #Rethinkdb AdminUI
+  config.vm.network "forwarded_port", guest: 7113, host: 7114 # Redis
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -39,13 +40,13 @@ Vagrant.configure(2) do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  # config.vm.network "public_network"
+  config.vm.network "public_network", ip: "192.168.11.131"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./src", "/vagrant"
+  config.vm.synced_folder "./src", "/home/vagrant"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -53,19 +54,19 @@ Vagrant.configure(2) do |config|
   #
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
-    vb.gui = false
-    vb.name = "docker.dev"
+    vb.gui = true
 
     # Customize the amount of memory on the VM:
     vb.memory = "3072"
-    vb.cpus = 4
+    vb.cpus = 1
   end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.ssh.private_key_path = "./keys/vagrant.ppk"
-
+  # config.ssh.private_key_path = "./.keys/vagrant.ppk"
+  config.ssh.port = 2230
+  # config.ssh.guest_port = 2221
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
@@ -77,6 +78,7 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    echo "I\"m Installing scripts now"
     sudo apt-get update
     sudo apt-get install git -y
     git clone git://github.com/ansible/ansible.git --recursive
@@ -88,7 +90,9 @@ Vagrant.configure(2) do |config|
     export ANSIBLE_INVENTORY=~/ansible_hosts
   SHELL
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "./src/main.yml"
-  end
+  config.vm.boot_timeout = 600
+
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "./src/main.yml"
+  # end
 end
