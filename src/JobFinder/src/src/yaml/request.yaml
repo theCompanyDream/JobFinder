@@ -35,11 +35,11 @@ Radius: 30
 Format: json
 TimeSpan: 10
 ShowGeo: True
-# Rentals:
-#     maxC: 1000
-#     minC : 200
-#     size: 125
-#     landry: true
-#     parking: true
-#     MinBedroom: 1
-#     MaxBedroom: 3
+Rentals:
+    maxC: 1000
+    minC : 200
+    size: 125
+    landry: true
+    parking: true
+    MinBedroom: 1
+    MaxBedroom: 3

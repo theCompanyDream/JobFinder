@@ -1,0 +1,4 @@
+#!flask/bin/python-dev
+
+from app import app
+app.run()
