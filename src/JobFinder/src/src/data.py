@@ -1,18 +1,19 @@
 import configparser
 import logging
-import rethinkdb as db
+import rethinkdb as r
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def connect():
-    db.connect('192.168.99.100', 28015).repl()
+    r.connect('192.168.99.100', 32769).repl()
 
 def save(tableName, payload):
-    print("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
+    # print("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
     if validate(tableName, payload):
         pass
-    performSave(tableName, payload)
+    for x in payload['results']:
+        performSave(tableName, payload['results'])
 
 def validate(name, payload):
     pass
@@ -20,12 +21,16 @@ def validate(name, payload):
 def performSave(name, payload):
     connect()
     product = object
-    ifexists = db.table(name).get(payload).run()
+    cursor = r.db("Job").table(name).filter(payload).run()
+    toList = [table for table in cursor]
 
-    if ifexists :
-        product = db.table(name).update(ifexists).run()
+
+    if len(toList) > 0:
+        product = r.db("Job").table(name).update(payload).run()
     else:
-        product = db.table(name).insert(payload).run()
+        product = r.db("Job").table(name).insert(payload).run()
+
+    print("Performed Insert: {0} {1} ".format(cursor, product))
 
     return product
 

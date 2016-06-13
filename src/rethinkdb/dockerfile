@@ -1,1 +1,1 @@
-FROM dockerfile/rethinkdb
+FROM rethinkdb

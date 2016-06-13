@@ -26,7 +26,6 @@ Vagrant.configure(2) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
 
-
   config.vm.network "forwarded_port", guest: 8080, host: 8035 # Crwaler
   config.vm.network "forwarded_port", guest: 8081, host: 8084 # Admin UI
   config.vm.network "forwarded_port", guest: 8082, host: 8086 # Rest Service
@@ -65,7 +64,7 @@ Vagrant.configure(2) do |config|
   # information on available options.
 
   # config.ssh.private_key_path = "./.keys/vagrant.ppk"
-  config.ssh.port = 2230
+  # config.ssh.port = 22
   # config.ssh.guest_port = 2221
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
@@ -78,16 +77,8 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    echo "I\"m Installing scripts now"
     sudo apt-get update
-    sudo apt-get install git -y
-    git clone git://github.com/ansible/ansible.git --recursive
-    cd ./ansible
-    source ./hacking/env-setup
-
-    sudo pip install paramiko PyYAML Jinja2 httplib2 six
-    echo "127.0.0.1" > ~/ansible_hosts
-    export ANSIBLE_INVENTORY=~/ansible_hosts
+    sudo apt-get install -y docker.io
   SHELL
 
   config.vm.boot_timeout = 600
