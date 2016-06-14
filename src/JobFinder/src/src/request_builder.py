@@ -6,8 +6,8 @@ using a classic Caeser shift substitution (3 letter shift)
 import itertools
 import os
 import yaml
-import requests
 import asyncio
+from util import Dict_To_String_Generator
 
 configDirectory = 'yaml'
 swagPattern = '.swagger.yaml'
@@ -83,20 +83,6 @@ def BuildRequest(*defaultparams, **kwargs):
             searchdict.update({key: payload[key] for key in defaultparams})
             yield website['url'], searchdict
         payload.update(website)
-
-
-
-def Dict_To_String_Generator(diction):
-    """
-        Generator Function that concats a val, key
-        TODO: better name and make format lambda
-    """
-    if diction:
-        for key,val in [[v, k] for v, k in diction.items()]:
-            for city in val:
-                yield "{0}, {1}".format(city, key)
-    else:
-        raise TypeError()
 
 def MapValues(mappingDictionary, requestDictionary):
     return {key: requestDictionary.get(val, '') for key, val in mappingDictionary.items()}

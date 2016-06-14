@@ -22,17 +22,15 @@ async def request_get(url, params):
     yield from asyncio.sleep(wait_time)
     async with client.get(url, params=params) as response:
         assert response.status == 200
-        print(response)
+        logging.debug(response)
         return await response.read()
 
 async def process_as_results_come_in():
     for url, req in run():
         response = await request_get(url, req)
         result = json.loads(response.decode('utf-8'))
-        # print(result['results'])
+        # logging.debug(result['results'])
         save("Jobs", *result['results'])
-
-
 
 def signal_handler(signal, frame):
     eloop.stop()
@@ -40,7 +38,7 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
-print("Starting Event Loop")
+logging.debug("Starting Event Loop")
 eLoop.run_until_complete(process_as_results_come_in())
 try:
     eLoop.run_forever()

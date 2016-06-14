@@ -1,3 +1,6 @@
+"""
+This creates the default tables for rethinkdb may possibly be moved to a dockerfile but for now it's fine here
+"""
 import rethinkdb as r
 
 jobDb = 'JobDb'

@@ -1,8 +1,6 @@
+#!/usr/bin/env python
 #coding: utf-8
 
-import os
-import sys
-import logging.config
 from setuptools import setup, find_packages
 
 NAME = "Job Search API"
@@ -14,7 +12,7 @@ VERSION = "0.0.1"
 #
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
-REQUIRES = ['requests', 'yaml', 'nose', 'rethinkdb','grequests']
+REQUIRES = ['requests', 'yaml', 'nose', 'rethinkdb']
 
 
 setup(
@@ -24,7 +22,7 @@ setup(
     install_requires = REQUIRES,
     include_package_data=True,
     version=VERSION,
-    packages=['requests', 'yaml', 'grequests'],
+    packages=find_packages(exclude=['tests', 'tests.*']),
     entry_points ={
         'console_scripts': [
             'search:main'

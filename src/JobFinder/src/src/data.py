@@ -6,10 +6,11 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def connect():
+    r.set_loop_type("asyncio")
     r.connect('192.168.99.100', 32769).repl()
 
 def save(tableName, *payload):
-    # print("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
+    # logging.debug("Processing Table {0}\n\t with payload:\n {1}".format(tableName, payload))
     for table in payload:
         if validate(tableName, table):
             pass
@@ -29,7 +30,7 @@ def perform_save(name, payload):
     else:
         product = r.db("JobDb").table(name).insert(payload).run()
 
-    print("Performed Insert: {0} {1} ".format(cursor, product))
+    logging.debug("Performed Insert: {0} {1} ".format(cursor, product))
 
     return product
 
@@ -38,9 +39,23 @@ def GetUniqueLocations():
     cursor = r.db('JobDb').table('Job').pluck('formattedLocation').distinct().run()
     return [x for x in cursor]
 
-def GetTable(name, pageNumber = 1, pageSize = 10):
+async def Get(conn, name, pageNumber = 1, pageSize = 10):
     connect()
     return r.db("JobDb").table(name).slice(pageNumber, pageSize)
 
+async def InsertOrUpdate():
+    logging.debug('')
+    pass
+
+async def Delete():
+    pass
+
+async def Distinct():
+    pass
+
 if __name__ == "__main__":
-    save('JobTable', {'Jobs': "Tim jobs yay"})
+    parser = configparser.ConfigParser()
+    found = parser.read("setup.cfg")
+    for section in found:
+        logging.debug(section)
+    # save('JobTable', {'Jobs': "Tim jobs yay"})
