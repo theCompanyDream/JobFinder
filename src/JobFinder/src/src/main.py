@@ -7,40 +7,45 @@
 import logging
 from request_builder import run
 from data import save
-import requests
+import asyncio
+import signal
+import aiohttp
+import sys
+import json
+import random
 
-logger = logging.getLogger(__name__)
+eLoop = asyncio.get_event_loop()
+client = aiohttp.ClientSession(loop=eLoop)
 
-def init():
-    # logging.config.fileConfig('logging_config.ini')
-    pass
+async def request_get(url, params):
+    wait_time = random.randint(1, 60)
+    yield from asyncio.sleep(wait_time)
+    async with client.get(url, params=params) as response:
+        assert response.status == 200
+        print(response)
+        return await response.read()
 
-def process_request_Save(rs):
-    for result in rs:
-        print(result)
-        save('Job', result.json())
+async def process_as_results_come_in():
+    for url, req in run():
+        response = await request_get(url, req)
+        result = json.loads(response.decode('utf-8'))
+        # print(result['results'])
+        save("Jobs", *result['results'])
 
-def process_as_results_come_in():
-    process = run()
-    requests = [next(process) for req in range(0,1)]
-    logging.debug("Going to save requests")
-    process_request_Save(requests)
 
-def process_get_status():
-    count = len([c for c in run()])
-    print("{0} URLS processed".format(count))
 
-def main():
-    init()
-    process_as_results_come_in()
-    # loop = asyncio.get_event_loop()
-    # print("Starting Event Loop")
-    # loop.run_until_complete(process_as_results_come_in())
-    # loop.run_until_completed(process_get_status())
-    # try:
-    #     loop.run_forever()
-    # finally:
-    #     loop.close()
+def signal_handler(signal, frame):
+    eloop.stop()
+    client.close()
+    sys.exit(0)
 
-if __name__ == "__main__":
-    main()
+signal.signal(signal.SIGINT, signal_handler)
+print("Starting Event Loop")
+eLoop.run_until_complete(process_as_results_come_in())
+try:
+    eLoop.run_forever()
+finally:
+    eLoop.close()
+
+# if __name__ == "__main__":
+#     main()

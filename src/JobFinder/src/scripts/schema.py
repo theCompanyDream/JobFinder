@@ -1,4 +1,9 @@
-import rethinkdb as db
+import rethinkdb as r
 
-db.connect('192.168.99.100', 28015).repl()
-db.db_create('Jobdb').table_create("JobListing").run()
+jobDb = 'JobDb'
+
+conn = r.connect('192.168.99.100', 32769).repl()
+r.db_create(jobDb).run()
+
+for table in ["Jobs", 'Apartments', 'Events']:
+    r.db(jobDb).table_create(table).run()

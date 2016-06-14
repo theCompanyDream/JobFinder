@@ -1,6 +1,0 @@
-[SpiderServer]
-web1
-
-[DatabaseServer]
-rethink1
-redis1

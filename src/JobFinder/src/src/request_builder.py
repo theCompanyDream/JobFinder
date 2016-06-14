@@ -7,6 +7,7 @@ import itertools
 import os
 import yaml
 import requests
+import asyncio
 
 configDirectory = 'yaml'
 swagPattern = '.swagger.yaml'
@@ -32,8 +33,8 @@ def run():
     valList = [val for key, val in IndeedDict.items()]
     for url, request in BuildRequest(*valList, **data):
         indeedRequest = MapValues(IndeedDict, request)
-        print("yield Indeed {}".format(url))
-        yield requests.get(url, params=indeedRequest)
+        print("yield Indeed {0}\n{1}".format(url, indeedRequest))
+        yield url, indeedRequest
 
 def parseFile(file=None):
     """
@@ -121,8 +122,41 @@ def listSwaggerConfig():
 
     return dirDict
 
-if __name__ == "__main__":
-    r = run()
+class Request(object):
+    def __init__(self, url, **body):
+        self.url = url
+        self.body = body
 
-    for x in range(0, 5):
-        print(next(r))
+    def __str__(self):
+        return "Name: {0} Url: {1}\nParams: {2}".format(self.name, self.url, self.body)
+
+    def run(self):
+        loop = asyncio.get_event_loop()
+
+        def RunRequest():
+            return requests.get(self.url, params = self.body)
+
+        return RunRequest
+
+
+if __name__ == "__main__":
+
+    async def t():
+        loop = asyncio.get_event_loop()
+        r = run()
+        for x in range(0, 5):
+            x = next(r)
+            # print(x)
+            func = x.run()
+            future = loop.run_in_executor(None, func)
+            response = await future
+            print(response)
+            print("processRequest")
+
+    async def guess():
+        for x in range(0,10):
+            print("process son")
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(t())
+    loop.run_until_complete(guess())
