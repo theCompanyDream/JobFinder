@@ -122,23 +122,6 @@ def listSwaggerConfig():
 
     return dirDict
 
-class Request(object):
-    def __init__(self, url, **body):
-        self.url = url
-        self.body = body
-
-    def __str__(self):
-        return "Name: {0} Url: {1}\nParams: {2}".format(self.name, self.url, self.body)
-
-    def run(self):
-        loop = asyncio.get_event_loop()
-
-        def RunRequest():
-            return requests.get(self.url, params = self.body)
-
-        return RunRequest
-
-
 if __name__ == "__main__":
 
     async def t():
