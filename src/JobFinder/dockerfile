@@ -1,12 +1,17 @@
-FROM dockerfile/ubuntu
-
+FROM ubuntu:14.04
+MAINTAINER Timothy Brantley II
 RUN \
   apt-get update && \
-  apt-get install -y python python-dev python-pip python-virtualenv make && \
+  apt-get install -y tar git curl nano wget dialog net-tools build-essential \
+  python python-dev python-pip python-virtualenv make libssl-dev && \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /data
 
-ADD /src /data
+ADD /src /var/www
+WORKDIR /var/www
+
+EXPOSE 80
+EXPOSE 443
 
 RUN make
